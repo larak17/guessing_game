@@ -1,8 +1,8 @@
 import streamlit as st
 
-st.title("Our Guessing Game")
+st.title("Hang man")
 
-st.write("Test.")
+st.subheader("A guessing game by Gwen Sammet and Lara Korte.")
 
 page1 = st.Page("page1.py", title="The Game", icon="🤔")
 page2 = st.Page("page2.py", title="The Stats", icon="📈")
