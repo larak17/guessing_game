@@ -21,10 +21,13 @@ for row in [letters[:9], letters[9:18], letters[18:]]:
     cols = st.columns(len(row))
 
     # make each letter a button and disable if pressed
-    for col, letter in zip(cols, row):
-        if col.button(letter, disabled=letter in st.session_state.guessed_letters):
-            st.session_state.guessed_letters.append(letter)
-            st.rerun()
+    for i in range(len(row)):
+        letter = row[i]
+
+        with cols[i]:
+            if st.button(letter, disabled=letter in st.session_state.guessed_letters):
+                st.session_state.guessed_letters.append(letter)
+                st.rerun()
 
 # Check whether the guessed letters are in the given word and display them after each other
 display_word = ""
