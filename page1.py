@@ -1,17 +1,19 @@
 import streamlit as st
 
-# initializing the session state for the guessed letter and store in list
-if "guessed_letters" not in st.session_state:
-    st.session_state.guessed_letters = []
-
-word = "Test" # gets generated later by an LLM
-
 st.write("To play the game, try to guess the word by suggesting letters. You have a limited number of incorrect guesses before the game is over. To keep track of your incorrect tries, look at the hang man.")
 
+# maybe see if we can get it disabled after we pressed start and maybe this could also run a new round?
 st.write("Press start to begin the game.")
 if st.button("Start"):
     st.write("Game started! Good luck!")
 
+# initializing the session state for the guessed letter and store in list
+if "guessed_letters" not in st.session_state:
+    st.session_state.guessed_letters = []
+
+# variables that are needed for the game
+word = "Test" # gets generated later by an LLM
+letters_of_word = list(word.lower()) # we can also do upper, I don't know what makes more sense
 letters = list("abcdefghijklmnopqrstuvwxyz")
 
 # create 3 rows display letters underneath each other
@@ -24,18 +26,14 @@ for row in [letters[:9], letters[9:18], letters[18:]]:
             st.session_state.guessed_letters.append(letter)
             st.rerun()
 
+# Check whether the guessed letters are in the given word and display them after each other
+display_word = ""
+for guessed_letter in letters_of_word:
+    if guessed_letter in st.session_state.guessed_letters:
+        display_word += guessed_letter + " "
+    else:
+        display_word += " _ "
 
-            #st.session_state.button_disabled = True
-            #try1 = letter
-            #st.write(f"You guessed: {try1}")
+st.subheader(display_word)
 
 
-            # if col.button(letter) and letter != try1:
-            #     try2 = letter
-            #     st.write(f"You guessed: {try2}")
-
-#for i in letters:
-# for letter in letters:
-#     print(letter)
-    # if letter == i in word:
-    #     st.write(f"{i} is in the word!")
