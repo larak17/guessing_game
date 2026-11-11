@@ -41,7 +41,8 @@ if st.button("Start"):
     input="Generate a new noun",
 )
     st.session_state.word = response.output_text
-    #st.write(st.session_state.word)
+    
+st.write(st.session_state.word)
 
 
 if st.session_state.word:
