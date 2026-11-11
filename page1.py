@@ -6,6 +6,7 @@ st.write("To play the game, try to guess the word by suggesting letters. You hav
 st.write("Press start to begin the game.")
 if st.button("Start"):
     st.write("Game started! Good luck!")
+    #generation of word by LLM
 
 # initializing the session state for the guessed letter and store in list
 if "guessed_letters" not in st.session_state:
@@ -38,5 +39,9 @@ for guessed_letter in letters_of_word:
         display_word += " _ "
 
 st.subheader(display_word)
+
+if all(letter in st.session_state.guessed_letters for letter in letters_of_word):
+    st.write("Congratulations! You guessed the word! Press Start to restart the game.")
+    st.balloons
 
 
