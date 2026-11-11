@@ -1,7 +1,7 @@
 import streamlit as st
 from openai import OpenAI, AuthenticationError, OpenAIError
 
-st.write("To play the game, try to guess the word by suggesting letters. You have a limited number of incorrect guesses before the game is over. To keep track of your incorrect tries, look at the hang man.")
+st.write("To play the game, try to guess the word by suggesting letters. You have a limited number of incorrect guesses before the game is over. To keep track of your incorrect tries, look at the hang man. Turn on the light mode for better visibility.")
 
 # ── ask for API Key, stop if not yet provided  ────────────────────────────────────────────
 with st.sidebar:
@@ -33,6 +33,9 @@ if "word" not in st.session_state:
 # initializing the error count, starting at zero
 if "error" not in st.session_state:
     st.session_state.error = 0
+
+# if "guesses" not in st.session_state:
+#     st.session_state.guesses = 0
 
 # maybe see if we can get it disabled after we pressed start and maybe this could also run a new round?
 st.write("Press Start to begin a new game.")
@@ -82,13 +85,15 @@ if st.session_state.word:
 
                     st.rerun()
 
-    #hangman and game limit             
+    #hangman             
     #st.info(f"Debug info: Error = {st.session_state.error}")
     if st.session_state.error >= 1:
         st.image(
             f"hangman/error{st.session_state.error}.svg",
             caption=f"You made {st.session_state.error} mistake."
         )
+
+    # Pop-up window when the user loses 
     if st.session_state.error >= 10:
         @st.dialog("Game over!", position="center")
         def error_message():
@@ -113,6 +118,9 @@ if st.session_state.word:
 
     st.subheader(display_word)
 
+    st.info(f"Guesses:{(len(st.session_state.guessed_letters))}")
+
+    # Pop-up window when the user wins the game
     if all(letter in st.session_state.guessed_letters for letter in letters_of_word):
         @st.dialog("Game over!", position="center")
         def win_message():
