@@ -30,10 +30,18 @@ if "guessed_letters" not in st.session_state:
 if "word" not in st.session_state:
     st.session_state.word = ""
 
+# initialize that button press gets counted for plots
+if "button_clicks" not in st.session_state:
+    st.session_state.button_clicks = 0
+
 # maybe see if we can get it disabled after we pressed start and maybe this could also run a new round?
 st.write("Press start to begin a new the game.")
 if st.button("Start"):
     st.write("Game started! Good luck!")
+
+    st.session_state.button_clicks += 1
+
+    st.session_state.guessed_letters = []
 
     response = client.responses.create(
     model="RedHatAI/gemma-4-31B-it-FP8-Dynamic",
@@ -42,6 +50,7 @@ if st.button("Start"):
 )
     st.session_state.word = response.output_text
     
+st.write(st.session_state.button_clicks)
 st.write(st.session_state.word)
 
 
