@@ -1,0 +1,19 @@
+Guessing Game:
+- Input section to guess word
+- hangman visualization and/or limiting guesses
+- AI generation of word
+
+    Bonus:
+    - different difficulties > change LLM prompt 
+
+Stats:
+- storing trials
+- storing users
+
+    Bonus:
+    - correlation of word length and guesses
+
+
+Questions (Thelen):
+- What exactly is meant by chat component?
+
