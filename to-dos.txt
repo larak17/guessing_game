@@ -1,7 +1,7 @@
 Guessing Game:
 - Input section to guess word
 - hangman visualization and/or limiting guesses
-- AI generation of word
+- AI generation of word -> do not generate the same word after start gets pressed
 
     Bonus:
     - different difficulties > change LLM prompt 
