@@ -31,16 +31,17 @@ if "word" not in st.session_state:
     st.session_state.word = ""
 
 # maybe see if we can get it disabled after we pressed start and maybe this could also run a new round?
-st.write("Press start to begin the game.")
+st.write("Press start to begin a new the game.")
 if st.button("Start"):
     st.write("Game started! Good luck!")
 
     response = client.responses.create(
     model="RedHatAI/gemma-4-31B-it-FP8-Dynamic",
-    input="Generate one noun",
+    instructions="Output just one word",
+    input="Generate a new noun",
 )
     st.session_state.word = response.output_text
-    st.write(st.session_state.word)
+    #st.write(st.session_state.word)
 
 
 if st.session_state.word:
@@ -75,6 +76,6 @@ if st.session_state.word:
 
     if all(letter in st.session_state.guessed_letters for letter in letters_of_word):
         st.write("Congratulations! You guessed the word! Press Start to restart the game.")
-        st.balloons
+        st.balloons()
 
 
