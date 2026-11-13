@@ -1,10 +1,11 @@
 Guessing Game:
 - Input section to guess word (chat component)
 ✅hangman visualization and/or limiting guesses (maybe in a different color, but should be fine so far)
-🟡 AI generation of word -> do not generate the same word after start gets pressed (maybe store generated words in a list)
+🟡 AI generation of word -> do not generate the same word after start gets pressed (maybe store generated words in a list, or also store it in the json file and then make a list out of this)
 
     Bonus:
     - different difficulties > change LLM prompt 
+    - maybe ask later for the API key so that we do not have to input it so often?
 
 Stats:
 ✅ storing trials (storing overall guesses, wrong guesses and length of word)
