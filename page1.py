@@ -129,6 +129,7 @@ if st.session_state.word:
         @st.dialog("Game over!")
         def error_message():
             st.error("Too many tries, you lose!")
+            st.write(f"The word was {st.session_state.word}") # show the correct word
 
             if st.button("New game"):
                 st.session_state.word = ""
