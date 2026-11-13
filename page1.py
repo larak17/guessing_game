@@ -35,20 +35,41 @@ if "word" not in st.session_state:
 if "error" not in st.session_state:
     st.session_state.error = 0
 
-if "button_clicks" not in st.session_state:
-    st.session_state.button_clicks = 0
-
 if "data_per_game" not in st.session_state:
     st.session_state.data_per_game = []
 
-# if "guesses" not in st.session_state:
-#     st.session_state.guesses = 0
+def save_game():
 
-# maybe see if we can get it disabled after we pressed start and maybe this could also run a new round?
+        # If we want to store all the games that were every played, we have to include this try except statement, otherwise we can also only store it for every starting the web app new
+        try:
+            with open("game_data.json", "r", encoding="utf-8") as datei:
+                all_data = json.load(datei)
+
+        except FileNotFoundError:
+            all_data = {"games": []}
+
+        # Determine the next game number
+        game_number = len(all_data["games"]) + 1
+        
+        games = {
+            "game": game_number,
+            "game_data": st.session_state.data_per_game
+        }
+
+        # Append new game
+        all_data["games"].append(games)
+
+        # Write updated data
+        with open("game_data.json", "w", encoding="utf-8") as datei:
+            json.dump(all_data, datei, indent=3, ensure_ascii=False)
+
+# pressing the button Start is the beginning of a new game
 st.write("Press Start to begin a new game.")
 if st.button("Start"):
-    st.session_state.button_clicks += 1
-    st.info(f"Games: {st.session_state}")
+    st.session_state.game_saved = False
+    st.session_state.guessed_letters = []
+    st.session_state.error = 0
+    st.session_state.data_per_game = []
     with st.spinner("Generating new word …"):
         try:
             st.session_state.guessed_letters = []
@@ -104,8 +125,9 @@ if st.session_state.word:
 
     # Pop-up window when the user loses 
     if st.session_state.error >= 10:
-        data_per_game = [len(st.session_state.guessed_letters), st.session_state.error, len(st.session_state.word)]
-        @st.dialog("Game over!", position="center")
+        st.session_state.data_per_game = [len(st.session_state.guessed_letters), st.session_state.error, len(st.session_state.word)]
+        save_game()
+        @st.dialog("Game over!")
         def error_message():
             st.error("Too many tries, you lose!")
 
@@ -113,6 +135,8 @@ if st.session_state.word:
                 st.session_state.word = ""
                 st.session_state.guessed_letters = []
                 st.session_state.error = 0
+                st.session_state.data_per_game = []
+                st.session_state.game_saved = False
                 st.rerun()
 
         error_message()
@@ -133,7 +157,8 @@ if st.session_state.word:
     # Pop-up window when the user wins the game
     if all(letter in st.session_state.guessed_letters for letter in letters_of_word):
         st.session_state.data_per_game = [len(st.session_state.guessed_letters), st.session_state.error, len(st.session_state.word)]
-        @st.dialog("Game over!", position="center")
+        save_game()
+        @st.dialog("Game over!")
         def win_message():
             st.success("Congratulations! You guessed the word!")
             st.balloons()
@@ -141,15 +166,9 @@ if st.session_state.word:
                 st.session_state.word = ""
                 st.session_state.guessed_letters = []
                 st.session_state.error = 0
+                st.session_state.data_per_game = []
+                st.session_state.game_saved = False
                 st.rerun()
 
         win_message()
-
-game_data = {
-    "game" : st.session_state.button_clicks,
-    "game_data": st.session_state.data_per_game
-}
-
-with open("game_data.json", "w", encoding="utf-8") as datei:
-    json.dump(game_data, datei, indent=3, ensure_ascii=False)
     
