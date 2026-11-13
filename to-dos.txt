@@ -1,7 +1,7 @@
 Guessing Game:
-- Input section to guess word
-✅hangman visualization and/or limiting guesses
-🟡 AI generation of word -> do not generate the same word after start gets pressed
+- Input section to guess word (chat component)
+✅hangman visualization and/or limiting guesses (maybe in a different color, but should be fine so far)
+🟡 AI generation of word -> do not generate the same word after start gets pressed (maybe store generated words in a list)
 
     Bonus:
     - different difficulties > change LLM prompt 
