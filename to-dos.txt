@@ -15,6 +15,7 @@ Stats:
     Bonus:
     - correlation of word length and guesses
 
+🔴 make sure that app can be opened in streamlit (did not work for me because of some requirement issues)
 
 Questions (Thelen):
 
