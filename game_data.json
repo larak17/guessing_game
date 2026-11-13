@@ -1,4 +1,20 @@
 {
-   "game": 4,
-   "game_data": []
+   "games": [
+      {
+         "game": 1,
+         "game_data": [
+            12,
+            10,
+            7
+         ]
+      },
+      {
+         "game": 2,
+         "game_data": [
+            7,
+            1,
+            7
+         ]
+      }
+   ]
 }
