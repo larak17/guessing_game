@@ -66,7 +66,6 @@ def save_game():
 # pressing the button Start is the beginning of a new game
 st.write("Press Start to begin a new game.")
 if st.button("Start"):
-    st.session_state.game_saved = False
     st.session_state.guessed_letters = []
     st.session_state.error = 0
     st.session_state.data_per_game = []
@@ -136,7 +135,6 @@ if st.session_state.word:
                 st.session_state.guessed_letters = []
                 st.session_state.error = 0
                 st.session_state.data_per_game = []
-                st.session_state.game_saved = False
                 st.rerun()
 
         error_message()
@@ -167,7 +165,6 @@ if st.session_state.word:
                 st.session_state.guessed_letters = []
                 st.session_state.error = 0
                 st.session_state.data_per_game = []
-                st.session_state.game_saved = False
                 st.rerun()
 
         win_message()
