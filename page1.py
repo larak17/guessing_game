@@ -1,5 +1,6 @@
 import streamlit as st
 from openai import OpenAI, AuthenticationError, OpenAIError
+import json
 
 st.write("To play the game, try to guess the word by suggesting letters. You have a limited number of incorrect guesses before the game is over. To keep track of your incorrect tries, look at the hang man. Turn on the light mode for better visibility.")
 
@@ -34,12 +35,20 @@ if "word" not in st.session_state:
 if "error" not in st.session_state:
     st.session_state.error = 0
 
+if "button_clicks" not in st.session_state:
+    st.session_state.button_clicks = 0
+
+if "data_per_game" not in st.session_state:
+    st.session_state.data_per_game = []
+
 # if "guesses" not in st.session_state:
 #     st.session_state.guesses = 0
 
 # maybe see if we can get it disabled after we pressed start and maybe this could also run a new round?
 st.write("Press Start to begin a new game.")
 if st.button("Start"):
+    st.session_state.button_clicks += 1
+    st.info(f"Games: {st.session_state}")
     with st.spinner("Generating new word …"):
         try:
             st.session_state.guessed_letters = []
@@ -95,6 +104,7 @@ if st.session_state.word:
 
     # Pop-up window when the user loses 
     if st.session_state.error >= 10:
+        data_per_game = [len(st.session_state.guessed_letters), st.session_state.error, len(st.session_state.word)]
         @st.dialog("Game over!", position="center")
         def error_message():
             st.error("Too many tries, you lose!")
@@ -118,10 +128,11 @@ if st.session_state.word:
 
     st.subheader(display_word)
 
-    st.info(f"Guesses:{(len(st.session_state.guessed_letters))}")
+    st.info(f"Guesses: {(len(st.session_state.guessed_letters))}")
 
     # Pop-up window when the user wins the game
     if all(letter in st.session_state.guessed_letters for letter in letters_of_word):
+        st.session_state.data_per_game = [len(st.session_state.guessed_letters), st.session_state.error, len(st.session_state.word)]
         @st.dialog("Game over!", position="center")
         def win_message():
             st.success("Congratulations! You guessed the word!")
@@ -133,4 +144,12 @@ if st.session_state.word:
                 st.rerun()
 
         win_message()
-        
+
+game_data = {
+    "game" : st.session_state.button_clicks,
+    "game_data": st.session_state.data_per_game
+}
+
+with open("game_data.json", "w", encoding="utf-8") as datei:
+    json.dump(game_data, datei, indent=3, ensure_ascii=False)
+    
