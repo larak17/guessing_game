@@ -7,8 +7,9 @@ Guessing Game:
     - different difficulties > change LLM prompt 
 
 Stats:
-🔴 storing trials
-🔴 storing users
+✅ storing trials (storing overall guesses, wrong guesses and length of word)
+✅ storing users (as number of games)
+🔴 displaying more interesting information on the stats page -> so far only number of games vs. overall guesses
 
     Bonus:
     - correlation of word length and guesses
