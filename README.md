@@ -9,3 +9,13 @@
 
 - disabled buttons (letters) that are pressed
 - checked each pressed button (letter) against the word and display the output
+
+(11.11) we:
+- integraded the LLM to generate words for the game
+- use the generated word to check the input against
+- create the hangman illustration and integrate it into the code
+- manage that a new word gets generated when 'start' is pressed
+- have a max of 10 wrong guesses (illustrated by the hangman) and end the game when reached
+
+(13.11) we:
+- started with the stats page
