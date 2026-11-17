@@ -169,4 +169,27 @@ if st.session_state.word:
                 st.rerun()
 
         win_message()
-    
+
+
+# include chat component
+prompt = st.chat_input("Guess the whole word")
+if prompt:
+    if prompt.upper() == st.session_state.word.upper():
+        st.write(f"{prompt.upper()} is correct!")
+        
+        st.session_state.data_per_game = [len(st.session_state.guessed_letters) + 1, st.session_state.error, len(st.session_state.word)]
+
+        save_game()
+        st.success("Congratulations! You guessed the word!")
+        st.balloons()
+        if st.button("Restart the game"):
+            st.session_state.word = ""
+            st.session_state.guessed_letters = []
+            st.session_state.error = 0
+            st.session_state.data_per_game = []
+            st.rerun()
+
+    else:
+        st.write("Try again")
+
+ 
