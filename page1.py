@@ -85,7 +85,7 @@ def word_generation():
                 response = client.responses.create(
                 model="RedHatAI/gemma-4-31B-it-FP8-Dynamic",
                 instructions="Output one word",
-                input="Generate a word that is simple enough for hangman and has at least 5 letters.",
+                input="Generate a word that is simple enough for hangman and has at least 5 letters.", # vielleicht nochmal anderer Prompt?
             )
                 new_word = response.output_text.upper()
 
