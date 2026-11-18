@@ -20,3 +20,5 @@
 (13.11) we:
 - included a function that safes the information needed for the stats page in a json file after a game if lost or won -> including information about the game number, the overall guesses, the wrong guesses and correct guesses. More information can also be included there
 - first bar plot on the stats page where just Games vs. Numer of Guesses are displayed -> we can either make more plots with different information or also assess here the quality of the guesses
+
+(18.11) we:
