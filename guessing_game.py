@@ -1,6 +1,7 @@
 import streamlit as st
 
-st.set_page_config(page_title="Hangman")
+st.set_page_config(page_title="Hangman",
+                   initial_sidebar_state="locked")
 st.logo("hangman/error10.svg")
 st.title("Hangman", text_alignment="center")
 
