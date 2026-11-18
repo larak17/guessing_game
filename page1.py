@@ -38,6 +38,10 @@ if "error" not in st.session_state:
 if "data_per_game" not in st.session_state:
     st.session_state.data_per_game = []
 
+if "word_input" not in st.session_state: 
+    st.session_state.word_input = ""
+
+
 def save_game():
 
         # If we want to store all the games that were every played, we have to include this try except statement, otherwise we can also only store it for every starting the web app new
@@ -89,8 +93,7 @@ if st.button("Start"):
                 "AI API request failed. Please check it and try again. "
             )
     
-#st.info(f"Debug info: The word is {st.session_state.word}.")
-
+st.info(f"Debug info: The word is {st.session_state.word}.")
 
 if st.session_state.word:
 
@@ -136,6 +139,7 @@ if st.session_state.word:
                 st.session_state.guessed_letters = []
                 st.session_state.error = 0
                 st.session_state.data_per_game = []
+                st.session_state.word_input = ""
                 st.rerun()
 
         error_message()
@@ -151,10 +155,20 @@ if st.session_state.word:
 
     st.subheader(display_word)
 
-    st.info(f"Guesses: {(len(st.session_state.guessed_letters))}")
+    prompt = st.chat_input("Guess the whole word")
+    if prompt:
+        st.session_state.word_input = prompt.upper()
+        st.session_state.guessed_letters.append("ö")
+        if st.session_state.word_input != st.session_state.word.upper():
+            st.write("Try again")
+            st.session_state.error += 1
+            st.rerun()
+        
+
+    st.info(f"Guesses: {len((st.session_state.guessed_letters))}")
 
     # Pop-up window when the user wins the game
-    if all(letter in st.session_state.guessed_letters for letter in letters_of_word):
+    if all(letter in st.session_state.guessed_letters for letter in letters_of_word) or st.session_state.word_input == st.session_state.word.upper():
         st.session_state.data_per_game = [len(st.session_state.guessed_letters), st.session_state.error, len(st.session_state.word)]
         save_game()
         @st.dialog("Game over!")
@@ -166,30 +180,9 @@ if st.session_state.word:
                 st.session_state.guessed_letters = []
                 st.session_state.error = 0
                 st.session_state.data_per_game = []
+                st.session_state.word_input = ""
                 st.rerun()
 
         win_message()
-
-
-# include chat component
-prompt = st.chat_input("Guess the whole word")
-if prompt:
-    if prompt.upper() == st.session_state.word.upper():
-        st.write(f"{prompt.upper()} is correct!")
-        
-        st.session_state.data_per_game = [len(st.session_state.guessed_letters) + 1, st.session_state.error, len(st.session_state.word)]
-
-        save_game()
-        st.success("Congratulations! You guessed the word!")
-        st.balloons()
-        if st.button("Restart the game"):
-            st.session_state.word = ""
-            st.session_state.guessed_letters = []
-            st.session_state.error = 0
-            st.session_state.data_per_game = []
-            st.rerun()
-
-    else:
-        st.write("Try again")
 
  
