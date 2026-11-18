@@ -51,7 +51,7 @@ if "word_input" not in st.session_state:
 # Store data in json file for statistics
 def save_game():
         if "all_data" not in st.session_state:
-        st.session_state.all_data = {"games": []}
+            st.session_state.all_data = {"games": []}
 
         # Determine the next game number
         game_number = len(st.session_state.all_data["games"]) + 1
