@@ -17,6 +17,10 @@ Stats:
 
 ✅ make sure that app can be opened in streamlit (did not work for me because of some requirement issues)
 
+- clean up the code (maybe change some stats)
+- add comments
+- clean up git
+
 Questions (Thelen):
 
 
