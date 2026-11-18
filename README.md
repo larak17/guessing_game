@@ -27,3 +27,4 @@
 - put hangman on the sidebar
 - included chat component to guess whole word
 - only have one json file per player so that stats are only for the person that plays at the moment (gets deleted afterwards)
+- make sure generated words are not used twice in the same game (put into a list)
