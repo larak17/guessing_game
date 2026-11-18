@@ -2,7 +2,13 @@ import streamlit as st
 from openai import OpenAI, AuthenticationError, OpenAIError
 import json
 
-st.write("To play the game, try to guess the word by suggesting letters. You have a limited number of incorrect guesses before the game is over. To keep track of your incorrect tries, look at the hang man. Turn on the light mode for better visibility.")
+intro = ''' To play the game, try to guess the word by suggesting letters. You have a limited number of incorrect guesses before the game is over. If you know the whole word, type it into the field on the bottom to reduce the amount of your guesses.  
+  
+:warning: **To keep track of your incorrect tries, look at the hangman showing up in the sidebar.**  
+  
+*Tip: Turn on the light mode for better visibility.*
+'''
+st.markdown(intro)
 
 # ── ask for API Key, stop if not yet provided  ────────────────────────────────────────────
 with st.sidebar:
@@ -23,15 +29,16 @@ client = OpenAI(
     api_key=api_key
 )
 
-# initializing the session state for the guessed letter and store in list
+# initializing the session state variables
 if "guessed_letters" not in st.session_state:
     st.session_state.guessed_letters = []
 
-# initializing the session state for the generated word and keep it empty first
 if "word" not in st.session_state:
     st.session_state.word = ""
 
-# initializing the error count, starting at zero
+if "word_list" not in st.session_state:
+    st.session_state.word_list = []
+
 if "error" not in st.session_state:
     st.session_state.error = 0
 
@@ -41,16 +48,9 @@ if "data_per_game" not in st.session_state:
 if "word_input" not in st.session_state: 
     st.session_state.word_input = ""
 
-
+# Store data in json file for statistics
 def save_game():
-
-        # If we want to store all the games that were every played, we have to include this try except statement, otherwise we can also only store it for every starting the web app new
-        try:
-            with open("game_data.json", "r", encoding="utf-8") as datei:
-                all_data = json.load(datei)
-
-        except FileNotFoundError:
-            all_data = {"games": []}
+        all_data = {"games": []}
 
         # Determine the next game number
         game_number = len(all_data["games"]) + 1
@@ -67,34 +67,49 @@ def save_game():
         with open("game_data.json", "w", encoding="utf-8") as datei:
             json.dump(all_data, datei, indent=3, ensure_ascii=False)
 
+# Use LLM to generate word
+def word_generation():
+    with st.spinner("Generating new word …"):
+            try:
+                st.session_state.guessed_letters = []
+
+                response = client.responses.create(
+                model="RedHatAI/gemma-4-31B-it-FP8-Dynamic",
+                instructions="Output one word",
+                input="Generate a word that is simple enough for hangman and has at least 5 letters.",
+            )
+                new_word = response.output_text.upper()
+
+                # prevent repetition of generated word
+                if new_word in st.session_state.word_list:
+                    response = client.responses.create(
+                        model="RedHatAI/gemma-4-31B-it-FP8-Dynamic",
+                        instructions="Output one word",
+                        input=f"Generate a word for hangman that is not included in {st.session_state.word_list}."
+                    )
+                    new_word = response.output_text.upper()
+
+                st.session_state.word = new_word
+                st.session_state.word_list.append(new_word)
+                st.write("Game started! Good luck!")
+
+            except AuthenticationError:
+                st.error("API was not accept. Please check it.")
+
+            except OpenAIError:
+                st.error(
+                    "AI API request failed. Please check it and try again. "
+                )
+
 # pressing the button Start is the beginning of a new game
 st.write("Press Start to begin a new game.")
 if st.button("Start"):
     st.session_state.guessed_letters = []
     st.session_state.error = 0
     st.session_state.data_per_game = []
-    with st.spinner("Generating new word …"):
-        try:
-            st.session_state.guessed_letters = []
+    word_generation()
 
-            response = client.responses.create(
-            model="RedHatAI/gemma-4-31B-it-FP8-Dynamic",
-            instructions="Output one word",
-            input="Generate a word that is simple enough for hangman, and has not been generated before",
-        )
-            st.session_state.word = response.output_text
-            st.write("Game started! Good luck!")
-
-        except AuthenticationError:
-            st.error("API was not accept. Please check it.")
-
-        except OpenAIError:
-            st.error(
-                "AI API request failed. Please check it and try again. "
-            )
-    
-st.info(f"Debug info: The word is {st.session_state.word}.")
-
+# Presenting letters etc. after word is generated
 if st.session_state.word:
 
     letters = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -117,13 +132,35 @@ if st.session_state.word:
 
                     st.rerun()
 
-    #hangman             
-    #st.info(f"Debug info: Error = {st.session_state.error}")
+    
+    # Check whether the guessed letters are in the given word and display them after each other
+    display_word = ""
+    for guessed_letter in letters_of_word:
+        if guessed_letter in st.session_state.guessed_letters:
+            display_word += guessed_letter + " "
+        else:
+            display_word += " _ "
+
+    st.subheader(display_word)
+
+    # Hangman visualization             
     if st.session_state.error >= 1:
-        st.image(
+        st.sidebar.image(
             f"hangman/error{st.session_state.error}.svg",
             caption=f"You made {st.session_state.error} mistake."
         )
+
+    # Opportunity for text input to reduce guesses, if user knows word already
+    prompt = st.chat_input("Guess the whole word")
+    if prompt:
+        st.session_state.word_input = prompt.upper()
+        st.session_state.guessed_letters.append("ö")
+        if st.session_state.word_input != st.session_state.word.upper():
+            st.write("Try again")
+            st.session_state.error += 1
+            st.rerun()
+        
+    st.info(f"Guesses: {len((st.session_state.guessed_letters))}")
 
     # Pop-up window when the user loses 
     if st.session_state.error >= 10:
@@ -143,29 +180,6 @@ if st.session_state.word:
                 st.rerun()
 
         error_message()
-
-
-    # Check whether the guessed letters are in the given word and display them after each other
-    display_word = ""
-    for guessed_letter in letters_of_word:
-        if guessed_letter in st.session_state.guessed_letters:
-            display_word += guessed_letter + " "
-        else:
-            display_word += " _ "
-
-    st.subheader(display_word)
-
-    prompt = st.chat_input("Guess the whole word")
-    if prompt:
-        st.session_state.word_input = prompt.upper()
-        st.session_state.guessed_letters.append("ö")
-        if st.session_state.word_input != st.session_state.word.upper():
-            st.write("Try again")
-            st.session_state.error += 1
-            st.rerun()
-        
-
-    st.info(f"Guesses: {len((st.session_state.guessed_letters))}")
 
     # Pop-up window when the user wins the game
     if all(letter in st.session_state.guessed_letters for letter in letters_of_word) or st.session_state.word_input == st.session_state.word.upper():
