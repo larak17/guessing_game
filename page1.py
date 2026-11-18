@@ -50,10 +50,11 @@ if "word_input" not in st.session_state:
 
 # Store data in json file for statistics
 def save_game():
-        all_data = {"games": []}
+        if "all_data" not in st.session_state:
+        st.session_state.all_data = {"games": []}
 
         # Determine the next game number
-        game_number = len(all_data["games"]) + 1
+        game_number = len(st.session_state.all_data["games"]) + 1
         
         games = {
             "game": game_number,
@@ -61,11 +62,11 @@ def save_game():
         }
 
         # Append new game
-        all_data["games"].append(games)
+        st.session_state.all_data["games"].append(games)
 
         # Write updated data
         with open("game_data.json", "w", encoding="utf-8") as datei:
-            json.dump(all_data, datei, indent=3, ensure_ascii=False)
+            json.dump(st.session_state.all_data, datei, indent=3, ensure_ascii=False)
 
 # Use LLM to generate word
 def word_generation():

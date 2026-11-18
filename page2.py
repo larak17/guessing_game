@@ -42,6 +42,7 @@ bar1 = ax.bar(games, all_guesses, label="All Guesses",
 bar2 = ax.bar(games, errors, label="Errors",
               color="salmon")
 
+ax.set_xticks(games)
 ax.set_xlabel("Games")
 ax.set_ylabel("Number")
 ax.set_title("Proportion of Wrong Guesses per Game")
@@ -57,6 +58,7 @@ fig, ax = plt.subplots(figsize=(10, 5))
 ax.bar(games, guess_quality, width=1,
        color="mediumseagreen")
 
+ax.set_xticks(games)
 ax.set_xlabel("Games")
 ax.set_ylabel("Word Length Divided by all Guesses")
 ax.set_title("Guess Quality per Game")
