@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import numpy as np
 import json
 
 st.title("Game Statistics")
@@ -10,20 +11,71 @@ with open("game_data.json", "r", encoding="utf-8") as datei:
 
 # Create two lists
 games = []
-guesses = []
+all_guesses = []
+errors = []
+word_length = []
+guess_quality = []
+
 
 for game in all_data["games"]:
     games.append(game["game"])
-    guesses.append(game["game_data"][0])
+    all_guesses.append(game["game_data"][0])
+    errors.append(game["game_data"][1])
+    word_length.append(game["game_data"][2])
+    guess_quality.append(game["game_data"][2] / game["game_data"][0])
 
-# Create bar chart
-fig, ax = plt.subplots()
+won = 0
+lost = 0
 
-ax.bar(games, guesses)
-ax.set_xticks(games) # make it only display one number and not a range
+for error in errors:
+    if error == 10:
+        lost += 1
+    else:
+        won += 1
+
+# Bar Plot: Guesses and Errors
+fig, ax = plt.subplots(figsize=(10, 5))
+
+bar1 = ax.bar(games, all_guesses, label="All Guesses",
+              color="cornflowerblue")
+
+bar2 = ax.bar(games, errors, label="Errors",
+              color="salmon")
 
 ax.set_xlabel("Games")
-ax.set_ylabel("Number of guesses")
-ax.set_title("Guesses per game")
+ax.set_ylabel("Number")
+ax.set_title("Proportion of Wrong Guesses per Game")
+ax.legend()
 
+plt.tight_layout()
+st.pyplot(fig)
+
+
+# Bar Plot: Guess Quality
+fig, ax = plt.subplots(figsize=(10, 5))
+
+ax.bar(games, guess_quality, width=1,
+       color="mediumseagreen")
+
+ax.set_xlabel("Games")
+ax.set_ylabel("Word Length Divided by all Guesses")
+ax.set_title("Guess Quality per Game")
+
+plt.tight_layout()
+st.pyplot(fig)
+
+
+# Pie Chart: Won vs. Lost
+fig, ax = plt.subplots(figsize=(7, 5))
+
+ax.pie(
+    [won, lost],
+    labels=["Games Won", "Games Lost"],
+    colors=["mediumseagreen", "salmon"],
+    autopct="%1.1f%%"
+)
+
+ax.set_title("Won vs. Lost Games")
+
+plt.tight_layout()
 st.pyplot(fig)
