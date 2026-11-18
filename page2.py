@@ -33,6 +33,15 @@ for error in errors:
     else:
         won += 1
 
+average_errors = sum(errors) / len(games)
+average_guesses = sum(all_guesses) / len(games)
+
+col1, col2, col3, col4 = st.columns(4)
+col1.metric(label="Games Won", value=won)
+col2.metric(label="Games Lost", value=lost)
+col3.metric(label="Average Guesses", value=average_guesses)
+col4.metric(label="Average Errors", value=average_errors)
+
 # Bar Plot: Guesses and Errors
 fig, ax = plt.subplots(figsize=(10, 5))
 
