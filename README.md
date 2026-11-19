@@ -33,3 +33,9 @@ A short timeline of the project:
 - included chat component to guess whole word
 - only have one json file per player so that stats are only for the person that plays at the moment (gets deleted afterwards)
 - make sure generated words are not used twice in the same game (put into a list)
+
+(19.11) we:
+- added a second button to directly view the stats page
+- cleaned up the code and repository a bit
+- started writing an overview for the project
+- added an information on the stats page that one needs to play a game to see statistics (to not have an error message)
