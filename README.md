@@ -1,4 +1,9 @@
-# guessing_game
+# Hangman
+
+For this project we decided to implement the guessing game Hangman. We decided to use an LLM to generate the hidden word. To guess the word, we implemented two different approaches: the individual letter in the format of buttons and a chat input, where the whole word can be typed in. Each input counts as one individual guess, therefore guessing the word as a whole only counts as one guess. If a wrong input is given, it will be counted as an error. Each error is illustrated by a new line of the hangman that is shown on the left side of the page. It is possibe to guess up until 10 errors, then the game is finished either way. 
+To keep track of the data that is produced during the game, we decided to create a new json file for each game where the word lenght, the overall guesses taken and the wrong guesses (errors) are saved. This json file can then be used to create the statistics on the stats page. There one can see how many games the player won, or lost. Also the average number of guesses and average number of erros can be observed. Moreover, a bar plot shows how many guesses were needed in each game, as well as the proportion of wrong guesses (errors) within the overall guesses. 
+
+A short timeline of the project: 
 
 (03.11) we:
 
