@@ -5,18 +5,22 @@ import json
 
 st.title("Game Statistics")
 
-# Load data from JSON
+# Load data from the json file that got created after the first game
 with open("game_data.json", "r", encoding="utf-8") as datei:
     all_data = json.load(datei)
 
-# Create two lists
+if not all_data:
+    st.info("You have to play at least one game to see your statistics")
+    st.stop()
+
+# Create lists for everything that we want to plot
 games = []
 all_guesses = []
 errors = []
 word_length = []
 guess_quality = []
 
-
+# loop through each item in the json file and put it into the respective lists
 for game in all_data["games"]:
     games.append(game["game"])
     all_guesses.append(game["game_data"][0])
@@ -24,18 +28,22 @@ for game in all_data["games"]:
     word_length.append(game["game_data"][2])
     guess_quality.append(game["game_data"][2] / game["game_data"][0])
 
+# create two counter to display won and lost games
 won = 0
 lost = 0
 
+# loop through the error count and add games to their respective counter
 for error in errors:
     if error == 10:
         lost += 1
     else:
         won += 1
 
+# calculate the average errors and average guesses to display on the stats page
 average_errors = sum(errors) / len(games)
 average_guesses = sum(all_guesses) / len(games)
 
+# use metric from streamlit to display on the stats page some overall statistics
 col1, col2, col3, col4 = st.columns(4)
 col1.metric(label="Games Won", value=won)
 col2.metric(label="Games Lost", value=lost)
@@ -60,7 +68,7 @@ ax.legend()
 plt.tight_layout()
 st.pyplot(fig)
 
-# Scatter plot
+# Scatter plot: Correlation between word length and guesss
 fig2, ax2 = plt.subplots(figsize=(9, 5))
 
 ax2.scatter(
@@ -72,7 +80,7 @@ ax2.scatter(
     label="Games"
 )
 
-# Trendline
+# Trendline for displaying an overall trend of the games played by one person
 z = np.polyfit(word_length, all_guesses, 1)
 p = np.poly1d(z)
 
@@ -86,7 +94,7 @@ ax2.plot(
     label="Trendline"
 )
 
-# Labels and formatting
+# Labels and formatting for the plot
 ax2.set_xlabel("Word Length")
 ax2.set_ylabel("All Guesses")
 ax2.set_title("Word Length vs. Number of Guesses")
