@@ -109,6 +109,13 @@ def word_generation():
                 st.error(
                     "AI API request failed. Please check it and try again. "
                 )
+                
+def restart():
+    st.session_state.word = ""
+    st.session_state.guessed_letters = []
+    st.session_state.error = 0
+    st.session_state.data_per_game = []
+    st.session_state.word_input = ""
 
 # pressing the button Start is the beginning of a new game
 st.write("Press Start to begin a new game.")
@@ -153,11 +160,14 @@ if st.session_state.word:
     st.subheader(display_word)
 
     # Hangman visualization             
-    if st.session_state.error >= 1:
+    if st.session_state.error >= 1 and st.session_state.error < 11:
         st.sidebar.image(
             f"hangman/error{st.session_state.error}.svg",
             caption=f"You made {st.session_state.error} mistake."
         )
+    elif st.session_state.error > 10:
+        restart()
+        st.rerun()
 
     # Opportunity for text input to reduce guesses, if user knows word already
     prompt = st.chat_input("Guess the whole word")
@@ -178,15 +188,15 @@ if st.session_state.word:
         @st.dialog("Game over!")
         def error_message():
             st.error("Too many tries, you lose!")
-            st.write(f"The word was {st.session_state.word}") # show the correct word
-
-            if st.button("New game"):
-                st.session_state.word = ""
-                st.session_state.guessed_letters = []
-                st.session_state.error = 0
-                st.session_state.data_per_game = []
-                st.session_state.word_input = ""
+            st.write(f"The word was {st.session_state.word}.") # show the correct word
+            game, stats= st.columns(2)
+            if game.button("New Game"):
+                restart()
                 st.rerun()
+            if stats.button("View Stats"):
+                restart() # otherwise, possibility of one game saved 2 times to stats
+                st.switch_page("page2.py")
+                
 
         error_message()
 
@@ -198,14 +208,12 @@ if st.session_state.word:
         def win_message():
             st.success("Congratulations! You guessed the word!")
             st.balloons()
-            if st.button("Restart the game"):
-                st.session_state.word = ""
-                st.session_state.guessed_letters = []
-                st.session_state.error = 0
-                st.session_state.data_per_game = []
-                st.session_state.word_input = ""
-                st.rerun()
-
+            game, stats= st.columns(2)
+            if game.button("New Game"):
+                restart()
+            if stats.button("View Stats"):
+                restart() # otherwise, possibility of one game saved 2 times to stats
+                st.switch_page("page2.py")
         win_message()
 
  
