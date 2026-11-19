@@ -6,10 +6,10 @@ import json
 st.title("Game Statistics")
 
 # Load data from the json file that got created after the first game
-with open("game_data.json", "r", encoding="utf-8") as datei:
-    all_data = json.load(datei)
-
-if not all_data:
+try:
+    with open("game_data.json", "r", encoding="utf-8") as datei:
+        all_data = json.load(datei)
+except: 
     st.info("You have to play at least one game to see your statistics")
     st.stop()
 
