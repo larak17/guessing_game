@@ -122,7 +122,7 @@ if st.button("Start"):
 if st.session_state.word:
 
     letters = list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    letters_of_word = list(st.session_state.word.upper()) # we can also do lower, I don't know what makes more sense
+    letters_of_word = list(st.session_state.word.upper()) 
 
     # create 3 rows display letters underneath each other
     for row in [letters[:9], letters[9:18], letters[18:]]:
