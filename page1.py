@@ -1,6 +1,7 @@
 import streamlit as st
 from openai import OpenAI, AuthenticationError, OpenAIError
 import json
+import os
 
 intro = ''' To play the game, try to guess the word by suggesting letters. You have a limited number of incorrect guesses before the game is over. If you know the whole word, type it into the field on the bottom to reduce the amount of your guesses.  
   
@@ -9,6 +10,13 @@ intro = ''' To play the game, try to guess the word by suggesting letters. You h
 *Tip: Turn on the light mode for better visibility.*
 '''
 st.markdown(intro)
+
+# initialize at the beginning so that previous json file gets removed
+if "initialized" not in st.session_state:
+    if os.path.exists("game_data.json"):
+        os.remove("game_data.json")
+
+    st.session_state.initialized = True
 
 # ── ask for API Key, stop if not yet provided  ────────────────────────────────────────────
 with st.sidebar:
