@@ -73,7 +73,7 @@ fig2, ax2 = plt.subplots(figsize=(9, 5))
 
 ax2.scatter(
     word_length,
-    all_guesses,
+    errors,
     color="cornflowerblue",
     s=80,
     alpha=0.8,
@@ -81,7 +81,7 @@ ax2.scatter(
 )
 
 # Trendline for displaying an overall trend of the games played by one person
-z = np.polyfit(word_length, all_guesses, 1)
+z = np.polyfit(word_length, errors, 1)
 p = np.poly1d(z)
 
 x_line = np.linspace(min(word_length), max(word_length), 100)
@@ -96,8 +96,8 @@ ax2.plot(
 
 # Labels and formatting for the plot
 ax2.set_xlabel("Word Length")
-ax2.set_ylabel("All Guesses")
-ax2.set_title("Word Length vs. Number of Guesses")
+ax2.set_ylabel("Errors")
+ax2.set_title("Word Length vs. Errors")
 
 ax2.grid(alpha=0.3)
 ax2.legend()
