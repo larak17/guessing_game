@@ -1,7 +1,7 @@
 Guessing Game:
 ✅Input section to guess word (chat component)
 ✅hangman visualization and/or limiting guesses (maybe in a different color, but should be fine so far)
-🟡 AI generation of word -> do not generate the same word after start gets pressed (maybe store generated words in a list, or also store it in the json file and then make a list out of this)
+✅ AI generation of word -> do not generate the same word after start gets pressed (maybe store generated words in a list, or also store it in the json file and then make a list out of this)
 
     Bonus:
     - different difficulties > change LLM prompt 
@@ -10,12 +10,16 @@ Guessing Game:
 Stats:
 ✅ storing trials (storing overall guesses, wrong guesses and length of word)
 ✅ storing users (as number of games)
-🔴 displaying more interesting information on the stats page -> so far only number of games vs. overall guesses
+🟡 displaying more interesting information on the stats page -> so far only number of games vs. overall guesses
 
     Bonus:
     - correlation of word length and guesses
 
 ✅ make sure that app can be opened in streamlit (did not work for me because of some requirement issues)
+
+- clean up the code (maybe change some stats)
+- add comments
+- clean up git
 
 Questions (Thelen):
 

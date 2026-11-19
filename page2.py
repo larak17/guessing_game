@@ -60,33 +60,40 @@ ax.legend()
 plt.tight_layout()
 st.pyplot(fig)
 
+# Scatter plot
+fig2, ax2 = plt.subplots(figsize=(9, 5))
 
-# Bar Plot: Guess Quality
-fig, ax = plt.subplots(figsize=(10, 5))
-
-ax.bar(games, guess_quality, width=1,
-       color="mediumseagreen")
-
-ax.set_xticks(games)
-ax.set_xlabel("Games")
-ax.set_ylabel("Word Length Divided by all Guesses")
-ax.set_title("Guess Quality per Game")
-
-plt.tight_layout()
-st.pyplot(fig)
-
-
-# Pie Chart: Won vs. Lost
-fig, ax = plt.subplots(figsize=(7, 5))
-
-ax.pie(
-    [won, lost],
-    labels=["Games Won", "Games Lost"],
-    colors=["mediumseagreen", "salmon"],
-    autopct="%1.1f%%"
+ax2.scatter(
+    word_length,
+    all_guesses,
+    color="cornflowerblue",
+    s=80,
+    alpha=0.8,
+    label="Games"
 )
 
-ax.set_title("Won vs. Lost Games")
+# Trendline
+z = np.polyfit(word_length, all_guesses, 1)
+p = np.poly1d(z)
+
+x_line = np.linspace(min(word_length), max(word_length), 100)
+
+ax2.plot(
+    x_line,
+    p(x_line),
+    color="salmon",
+    linestyle="--",
+    label="Trendline"
+)
+
+# Labels and formatting
+ax2.set_xlabel("Word Length")
+ax2.set_ylabel("All Guesses")
+ax2.set_title("Word Length vs. Number of Guesses")
+
+ax2.grid(alpha=0.3)
+ax2.legend()
 
 plt.tight_layout()
-st.pyplot(fig)
+st.pyplot(fig2)
+plt.close(fig2)
