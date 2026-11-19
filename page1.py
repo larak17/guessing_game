@@ -211,6 +211,7 @@ if st.session_state.word:
             game, stats= st.columns(2)
             if game.button("New Game"):
                 restart()
+                st.rerun()
             if stats.button("View Stats"):
                 restart() # otherwise, possibility of one game saved 2 times to stats
                 st.switch_page("page2.py")
