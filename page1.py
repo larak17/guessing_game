@@ -65,7 +65,8 @@ def save_game():
         game_number = len(st.session_state.all_data["games"]) + 1
         
         games = {
-            "game": game_number,
+            "game_nr": game_number,
+            "game": st.session_state.word,
             "game_data": st.session_state.data_per_game
         }
 
