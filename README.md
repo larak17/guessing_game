@@ -10,7 +10,9 @@ To play the game, you can visit this [website](https://guessinggame-4fbw3b7ua7zk
 
 
 
-A short timeline of the project: 
+
+
+#### A short timeline of the project: 
 
 (03.11) both of us:
 
