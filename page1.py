@@ -185,7 +185,7 @@ if st.session_state.word:
     if st.session_state.error >= 10:
         st.session_state.data_per_game = [len(st.session_state.guessed_letters), st.session_state.error, len(st.session_state.word)]
         save_game()
-        @st.dialog("Game over!")
+        @st.dialog("Game over!",dismissible=False)
         def error_message():
             st.error("Too many tries, you lose!")
             st.write(f"The word was {st.session_state.word}.") # show the correct word
@@ -196,15 +196,13 @@ if st.session_state.word:
             if stats.button("View Stats"):
                 restart() # otherwise, possibility of one game saved 2 times to stats
                 st.switch_page("page2.py")
-                
-
         error_message()
 
     # Pop-up window when the user wins the game
     if all(letter in st.session_state.guessed_letters for letter in letters_of_word) or st.session_state.word_input == st.session_state.word.upper():
         st.session_state.data_per_game = [len(st.session_state.guessed_letters), st.session_state.error, len(st.session_state.word)]
         save_game()
-        @st.dialog("Game over!")
+        @st.dialog("Game over!",dismissible=False)
         def win_message():
             st.success("Congratulations! You guessed the word!")
             st.balloons()
@@ -215,6 +213,4 @@ if st.session_state.word:
             if stats.button("View Stats"):
                 restart() # otherwise, possibility of one game saved 2 times to stats
                 st.switch_page("page2.py")
-        win_message()
-
- 
+        win_message() 
