@@ -68,7 +68,9 @@ ax.legend()
 plt.tight_layout()
 st.pyplot(fig)
 
-# Scatter plot: Correlation between word length and guesss
+st.write("This Satter Plot shows a possible correlation between word length and wrong guesses. This gives the player the information whether a longer word had more wrong guesses then a shorter word.")
+
+# Scatter plot: Correlation between word length and wrong guesses
 fig2, ax2 = plt.subplots(figsize=(9, 5))
 
 ax2.scatter(
