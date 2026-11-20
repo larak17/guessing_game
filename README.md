@@ -5,7 +5,7 @@ To keep track of the data that is produced during the game, we decided to create
 
 
 
-To play the game, you can visit this website: https://guessinggame-4fbw3b7ua7zksfbblfendm.streamlit.app/
+To play the game, you can visit this website: https://guessinggame-4fbw3b7ua7zksfbblfendm.streamlit.app/ or run the guessing_game.py file
 
 
 
