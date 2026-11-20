@@ -85,7 +85,7 @@ def word_generation():
                 response = client.responses.create(
                 model="RedHatAI/gemma-4-31B-it-FP8-Dynamic",
                 instructions="Output one word",
-                input="Generate a word that is simple enough for hangman and has at least 5 letters. Be creative and make it simple enough for a fun game of hangman.",
+                input="Generate a word that has between 5 and 12 letters. Be creative and make it simple enough for a fun game of hangman that is also suitable for non-native English speakers.",
             )
                 new_word = response.output_text.upper()
 
@@ -94,7 +94,7 @@ def word_generation():
                     response = client.responses.create(
                         model="RedHatAI/gemma-4-31B-it-FP8-Dynamic",
                         instructions="Output one word",
-                        input=f"Generate a word for hangman that is not included in {st.session_state.word_list}. Be creative, to make the game interesting."
+                        input=f"Generate a word for hangman that is not included in {st.session_state.word_list} and has at between 5 and 12 letters. Be creative and make it simple enough for a fun game of hangman that is also suitable for non-native English speakers."
                     )
                     new_word = response.output_text.upper()
 
