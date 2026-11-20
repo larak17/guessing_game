@@ -61,8 +61,8 @@ bar2 = ax.bar(games, errors, label="Errors",
 
 ax.set_xticks(games)
 ax.set_xlabel("Games")
-ax.set_ylabel("Number")
-ax.set_title("Proportion of Wrong Guesses per Game")
+ax.set_ylabel("Guesses")
+ax.set_title("Proportion of Wrong Guesses Out of All Guesses")
 ax.legend()
 
 plt.tight_layout()
