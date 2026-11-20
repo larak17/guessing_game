@@ -68,9 +68,7 @@ ax.legend()
 plt.tight_layout()
 st.pyplot(fig)
 
-information = ''' This Satter Plot shows a possible correlation between word length and wrong guesses. This gives the player the information whether a longer word had more wrong guesses then a shorter word. '''
-
-st.markdown(information)
+st.write("In the Bar Chart above, you can see how many guesses you proposed during each game and how many of those guesses were wrong. If the error bar reaches 10 guesses, you lost the game. Which words were easy for you?")
 
 # Scatter plot: Correlation between word length and wrong guesses
 fig2, ax2 = plt.subplots(figsize=(9, 5))
@@ -109,3 +107,6 @@ ax2.legend()
 plt.tight_layout()
 st.pyplot(fig2)
 plt.close(fig2)
+
+st.write("This Scatter Plot shows a possible correlation between the length of a word and the amount of wrong guesses. Here you can see whether you make more errors the longer the word is. In our experience, this does not correlate often, but maybe it does for you.😊")
+
