@@ -28,7 +28,7 @@ The word won't repeat during all the games when the player opens the website for
 (11.11) both of us:
 - integraded the LLM to generate words for the game
 - use the generated word to check the input against
-- create the hangman illustration and integrate it into the code
+- create the hangman illustration via penpot and integrate it into the code
 - manage that a new word gets generated when 'start' is pressed
 - have a max of 10 wrong guesses (illustrated by the hangman) and end the game when reached
 
